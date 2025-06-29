@@ -76,11 +76,11 @@ if st.button("Build My Startup") and startup_idea.strip():
 
     # Download PDF button
     if st.button("📄 Download PDF Summary"):
-    pdf_path = save_as_pdf(agent_outputs)
-    with open(pdf_path, "rb") as f:
-        st.download_button(
-            label="📥 Download startup_summary.pdf",
-            data=f,
-            file_name="startup_summary.pdf",
-            mime="application/pdf"
-        )
+        pdf_path = save_as_pdf(agent_outputs)
+        with open(pdf_path, "rb") as f:
+            st.download_button(
+                label="📥 Download startup_summary.pdf",
+                data=f,
+                file_name="startup_summary.pdf",
+                mime="application/pdf"
+            )

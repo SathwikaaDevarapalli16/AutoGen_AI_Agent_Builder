@@ -71,11 +71,11 @@ if st.button("Build My Startup") and startup_idea.strip():
         else:
             st.markdown(content)
 
-    # Download PDF
-    if agent_outputs:
+  # ✅ This must be outside the loop
+    if st.button("📄 Download PDF Summary"):
         pdf_buffer = save_as_pdf(agent_outputs)
         st.download_button(
-            label="📥 Download PDF Summary",
+            label="📥 Download startup_summary.pdf",
             data=pdf_buffer,
             file_name="startup_summary.pdf",
             mime="application/pdf"

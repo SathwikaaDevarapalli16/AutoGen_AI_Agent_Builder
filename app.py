@@ -1,12 +1,11 @@
-
 import streamlit as st
 import os
 import pandas as pd
 from autogen import UserProxyAgent, GroupChat, GroupChatManager
 from agents import get_agents
-from utils import save_as_pdf
+from utils import save_as_pdf  # Make sure utils.py is present
 
-# Load API key from environment
+# Load API Key
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 if not OPENAI_API_KEY:
     st.error("OpenAI API key not found. Please set it in environment variables.")
@@ -18,6 +17,7 @@ config = {
     "temperature": 0.7,
 }
 
+# Streamlit UI setup
 st.set_page_config(page_title="Startup Builder AI", layout="wide")
 st.title("🚀 AI Startup Builder (AutoGen Multi-Agent)")
 
@@ -28,20 +28,20 @@ startup_idea = st.text_area(
     placeholder="Ex: I want to build a startup around Ayurvedic protein powders for gamers..."
 )
 
-# Run agents on button click
+# Run on click
 if st.button("Build My Startup") and startup_idea.strip():
     with st.spinner("🤖 Agents are thinking..."):
 
-        # Set up agents
+        # Setup agents
         agents = get_agents(config)
         user = UserProxyAgent(name="User", code_execution_config=False)
         groupchat = GroupChat(agents=[user] + agents, messages=[], max_round=8)
         manager = GroupChatManager(groupchat=groupchat, llm_config=config)
 
-        # Initiate chat with startup idea
+        # Trigger conversation
         user.initiate_chat(manager, message=startup_idea)
 
-        # Collect responses
+        # Collect agent outputs
         agent_outputs = {}
         for msg in groupchat.messages:
             if 'sender' not in msg or 'content' not in msg:
@@ -54,11 +54,9 @@ if st.button("Build My Startup") and startup_idea.strip():
 
     st.success("🎉 Your AI startup is ready!")
 
-    # Display agent outputs
+    # Display content
     for section, content in agent_outputs.items():
         st.subheader(f"🧠 {section}")
-
-        # Check for markdown table and display as DataFrame
         if "|---" in content and "|" in content:
             try:
                 table_lines = [line.strip() for line in content.splitlines() if "|" in line]
@@ -68,17 +66,17 @@ if st.button("Build My Startup") and startup_idea.strip():
                 df.columns = [col.strip() for col in df.columns]
                 df = df.dropna(axis=1, how="all")
                 st.dataframe(df)
-            except Exception as e:
+            except Exception:
                 st.markdown(content)
         else:
             st.markdown(content)
 
-    # Download PDF button
-    pdf_buffer = save_as_pdf(agent_outputs)
-    st.download_button(
-        label="📥 Download PDF Summary",
-        data=pdf_buffer,
-        file_name="startup_summary.pdf",
-        mime="application/pdf"
-    )
-
+    # Download PDF
+    if agent_outputs:
+        pdf_buffer = save_as_pdf(agent_outputs)
+        st.download_button(
+            label="📥 Download PDF Summary",
+            data=pdf_buffer,
+            file_name="startup_summary.pdf",
+            mime="application/pdf"
+        )

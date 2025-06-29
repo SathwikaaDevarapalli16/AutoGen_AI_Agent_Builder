@@ -43,6 +43,8 @@ if st.button("Build My Startup") and startup_idea.strip():
         # Collect responses
         agent_outputs = {}
         for msg in groupchat.messages:
+            if 'sender' not in msg or 'content' not in msg:
+                continue  
             role = msg['sender'].replace("Agent", "").replace("Checker", " Checker").strip()
             if role not in agent_outputs:
                 agent_outputs[role] = msg['content']

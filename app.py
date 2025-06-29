@@ -12,7 +12,7 @@ if not OPENAI_API_KEY:
     st.stop()
 
 config = {
-    "config_list": [{"model": "gpt-4", "api_key": OPENAI_API_KEY}],
+    "config_list": [{"model": "gpt-3.5-turbo", "api_key": OPENAI_API_KEY}],
     "temperature": 0.7,
 }
 

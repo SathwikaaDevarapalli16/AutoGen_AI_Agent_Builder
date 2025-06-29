@@ -22,7 +22,8 @@ def save_as_pdf(agent_outputs):
             pdf.ln()
 
     buffer = BytesIO()
-    pdf.output(buffer)
+    pdf_bytes = pdf.output(dest='S').encode('latin1')  # FIXED
+    buffer.write(pdf_bytes)
     buffer.seek(0)
     return buffer
 

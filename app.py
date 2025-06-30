@@ -51,13 +51,15 @@ if st.button("Build My Startup") and startup_idea.strip():
         # Gather outputs
         agent_outputs = {}
         for msg in groupchat.messages:
-            if 'sender' not in msg or 'content' not in msg:
+            # Skip system or malformed messages
+            if "name" not in msg or "content" not in msg:
                 continue
-            role = msg['sender'].replace("Agent", "").replace("Checker", " Checker").strip()
-            if role not in agent_outputs:
-                agent_outputs[role] = msg['content']
+            sender = msg["name"]
+            content = msg["content"]
+            if sender not in agent_outputs:
+                agent_outputs[sender] = content
             else:
-                agent_outputs[role] += "\n" + msg['content']
+                agent_outputs[sender] += "\n\n" + content
         st.write("Agent Outputs Collected:", agent_outputs)
 
     st.success("🎉 Your AI startup is ready!")

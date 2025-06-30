@@ -28,7 +28,6 @@ startup_idea = st.text_area(
     placeholder="Ex: I want to build a startup around Ayurvedic protein powders for gamers..."
 )
 #Run agents
-agents_outputs = {}
 if st.button("Build My Startup") and startup_idea.strip():
     with st.spinner("🤖 Agents are thinking..."):
 
@@ -42,6 +41,7 @@ if st.button("Build My Startup") and startup_idea.strip():
         user.initiate_chat(manager, message=startup_idea)
 
         # Collect agent outputs
+        agents_outputs = {}
         for msg in groupchat.messages:
             if 'sender' not in msg or 'content' not in msg:
                 continue

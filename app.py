@@ -74,12 +74,15 @@ if st.button("Build My Startup") and startup_idea.strip():
             st.markdown(content)
 
     # Generate PDF and show download button
-    pdf_buffer = save_as_pdf(agent_outputs)
-    st.download_button(
-        label="📥 Download PDF Summary",
-        data=pdf_buffer,
-        file_name="startup_summary.pdf",
-        mime="application/pdf"
-    )
+    if agents_outputs:
+        pdf_buffer = save_as_pdf(agent_outputs)
+        st.download_button(
+            label="📥 Download PDF Summary",
+            data=pdf_buffer,
+            file_name="startup_summary.pdf",
+            mime="application/pdf"
+        )
+    else:
+        st.warning(⚠️ No agent outputs to include in PDF.")
 
 

@@ -27,8 +27,8 @@ startup_idea = st.text_area(
     height=150,
     placeholder="Ex: I want to build a startup around Ayurvedic protein powders for gamers..."
 )
-
-# Run on click
+#Run agents
+agents_outputs = {}
 if st.button("Build My Startup") and startup_idea.strip():
     with st.spinner("🤖 Agents are thinking..."):
 
@@ -42,7 +42,6 @@ if st.button("Build My Startup") and startup_idea.strip():
         user.initiate_chat(manager, message=startup_idea)
 
         # Collect agent outputs
-        agent_outputs = {}
         for msg in groupchat.messages:
             if 'sender' not in msg or 'content' not in msg:
                 continue
@@ -59,22 +58,20 @@ if st.button("Build My Startup") and startup_idea.strip():
         st.subheader(f"🧠 {section}")
         if "|---" in content and "|" in content:
             try:
-                table_lines = [line.strip() for line in content.splitlines() if "|" in line]
-                table_text = "\n".join(table_lines)
                 from io import StringIO
-                df = pd.read_csv(StringIO(table_text), sep="|", engine="python")
+                table_lines = [line for line in content.splitlines() if "|" in line]
+                df = pd.read_csv(StringIO("\n".join(table_lines)), sep="|", engine="python")
                 df.columns = [col.strip() for col in df.columns]
                 df = df.dropna(axis=1, how="all")
                 st.dataframe(df)
-            except Exception:
+            except:
                 st.markdown(content)
         else:
             st.markdown(content)
 
   # ✅ This must be outside the loop
-    if st.button("📄 Download PDF Summary"):
-        pdf_buffer = save_as_pdf(agent_outputs)
-        st.download_button(
+  pdf_buffer = save_as_pdf(agent_outputs)
+    st.download_button(
             label="📥 Download startup_summary.pdf",
             data=pdf_buffer,
             file_name="startup_summary.pdf",

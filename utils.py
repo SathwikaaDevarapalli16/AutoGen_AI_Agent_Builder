@@ -17,9 +17,8 @@ def save_as_pdf(agent_outputs):
             pdf.multi_cell(0, 10, txt=line)
         pdf.ln()
 
-    buffer = BytesIO()
-    pdf.output(buffer)
-    buffer.seek(0)
+    pdf_bytes = pdf.output(dest='S').encode('latin1')
+    buffer = BytesIO(pdf_bytes)
     return buffer
 
 

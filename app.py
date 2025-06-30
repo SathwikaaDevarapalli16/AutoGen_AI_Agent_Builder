@@ -36,9 +36,13 @@ if st.button("Build My Startup") and startup_idea.strip():
         user = UserProxyAgent(name="User", code_execution_config=False)
         groupchat = GroupChat(agents=[user] + agents, messages=[], max_round=8)
         manager = GroupChatManager(groupchat=groupchat, llm_config=config)
+        st.write("✅ Agents initialized:", [agent.name for agent in agents])
+
 
         # Initiate chat
         user.initiate_chat(manager, message=startup_idea)
+        st.write("✅ Chat initiated. Messages in GroupChat:", groupchat.messages)
+
 
         # Gather outputs
         agent_outputs = {}

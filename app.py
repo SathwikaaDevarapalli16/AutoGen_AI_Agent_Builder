@@ -41,7 +41,11 @@ if st.button("Build My Startup") and startup_idea.strip():
 
         # Initiate chat
         user.initiate_chat(manager, message=startup_idea)
+        manager.run()
+
         st.write("✅ Chat initiated. Messages in GroupChat:", groupchat.messages)
+        st.write("Agent Outputs Collected:", agent_outputs)
+
 
 
         # Gather outputs

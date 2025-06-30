@@ -83,6 +83,6 @@ if st.button("Build My Startup") and startup_idea.strip():
             mime="application/pdf"
         )
     else:
-        st.warning(⚠️ No agent outputs to include in PDF.")
+        st.warning( No agent outputs to include in PDF.")
 
 

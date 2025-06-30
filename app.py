@@ -44,7 +44,7 @@ if st.button("Build My Startup") and startup_idea.strip():
         manager.run()
 
         st.write("✅ Chat initiated. Messages in GroupChat:", groupchat.messages)
-        st.write("Agent Outputs Collected:", agent_outputs)
+        
 
 
 
@@ -58,6 +58,7 @@ if st.button("Build My Startup") and startup_idea.strip():
                 agent_outputs[role] = msg['content']
             else:
                 agent_outputs[role] += "\n" + msg['content']
+        st.write("Agent Outputs Collected:", agent_outputs)
 
     st.success("🎉 Your AI startup is ready!")
 

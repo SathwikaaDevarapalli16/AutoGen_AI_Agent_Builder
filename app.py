@@ -74,7 +74,7 @@ if st.button("Build My Startup") and startup_idea.strip():
             st.markdown(content)
 
     # Generate PDF and show download button
-    if agents_outputs:
+    if agent_outputs:
         pdf_buffer = save_as_pdf(agent_outputs)
         st.download_button(
             label="📥 Download PDF Summary",
